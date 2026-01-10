@@ -8,12 +8,10 @@ import io.reflectoring.buckpal.application.port.out.UpdateAccountStatePort;
 import io.reflectoring.buckpal.common.UseCase;
 import io.reflectoring.buckpal.application.domain.model.Account;
 import io.reflectoring.buckpal.application.domain.model.Account.AccountId;
-import lombok.RequiredArgsConstructor;
 
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 
-@RequiredArgsConstructor
 @UseCase
 @Transactional
 public class SendMoneyService implements SendMoneyUseCase {
@@ -22,6 +20,13 @@ public class SendMoneyService implements SendMoneyUseCase {
 	private final AccountLock accountLock;
 	private final UpdateAccountStatePort updateAccountStatePort;
 	private final MoneyTransferProperties moneyTransferProperties;
+
+	public SendMoneyService(LoadAccountPort loadAccountPort, AccountLock accountLock, UpdateAccountStatePort updateAccountStatePort, MoneyTransferProperties moneyTransferProperties) {
+		this.loadAccountPort = loadAccountPort;
+		this.accountLock = accountLock;
+		this.updateAccountStatePort = updateAccountStatePort;
+		this.moneyTransferProperties = moneyTransferProperties;
+	}
 
 	@Override
 	public boolean sendMoney(SendMoneyCommand command) {
@@ -46,14 +51,14 @@ public class SendMoneyService implements SendMoneyUseCase {
 		accountLock.lockAccount(sourceAccountId);
 		if (!sourceAccount.withdraw(command.money(), targetAccountId)) {
 			accountLock.releaseAccount(sourceAccountId);
-			return false;
+			throw new RuntimeException("Withdraw failed: insufficient funds in account " + sourceAccountId);
 		}
 
 		accountLock.lockAccount(targetAccountId);
 		if (!targetAccount.deposit(command.money(), sourceAccountId)) {
 			accountLock.releaseAccount(sourceAccountId);
 			accountLock.releaseAccount(targetAccountId);
-			return false;
+			throw new RuntimeException("Deposit failed: could not deposit funds to account " + targetAccountId);
 		}
 
 		updateAccountStatePort.updateActivities(sourceAccount);

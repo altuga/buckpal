@@ -50,9 +50,7 @@ class SendMoneyServiceTest {
 				targetAccountId,
 				Money.of(300L));
 
-		boolean success = sendMoneyService.sendMoney(command);
-
-		assertThat(success).isFalse();
+		org.junit.jupiter.api.Assertions.assertThrows(RuntimeException.class, () -> sendMoneyService.sendMoney(command));
 
 		then(accountLock).should().lockAccount(eq(sourceAccountId));
 		then(accountLock).should().releaseAccount(eq(sourceAccountId));

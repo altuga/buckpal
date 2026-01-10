@@ -1,2 +1,16 @@
 buckpal:
   transferThreshold: 10000
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:buckpal
+  h2:
+    console:
+      enabled: true
+  jpa:
+    defer-datasource-initialization: true
+
+server:
+  error:
+    include-message: always
+

@@ -1,74 +1,140 @@
 package io.reflectoring.buckpal.application.domain.model;
 
 import java.time.LocalDateTime;
-
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.Value;
+import java.util.Objects;
 
 /**
  * A money transfer activity between {@link Account}s.
  */
-@Value
-@RequiredArgsConstructor
 public class Activity {
 
-	@Getter
-	private ActivityId id;
+	private final ActivityId id;
 
 	/**
 	 * The account that owns this activity.
 	 */
-	@Getter
-	@NonNull
 	private final Account.AccountId ownerAccountId;
 
 	/**
 	 * The debited account.
 	 */
-	@Getter
-	@NonNull
 	private final Account.AccountId sourceAccountId;
 
 	/**
 	 * The credited account.
 	 */
-	@Getter
-	@NonNull
 	private final Account.AccountId targetAccountId;
 
 	/**
 	 * The timestamp of the activity.
 	 */
-	@Getter
-	@NonNull
 	private final LocalDateTime timestamp;
 
 	/**
 	 * The money that was transferred between the accounts.
 	 */
-	@Getter
-	@NonNull
 	private final Money money;
 
+    public Activity(ActivityId id, Account.AccountId ownerAccountId, Account.AccountId sourceAccountId, Account.AccountId targetAccountId, LocalDateTime timestamp, Money money) {
+        this.id = id;
+        this.ownerAccountId = ownerAccountId;
+        this.sourceAccountId = sourceAccountId;
+        this.targetAccountId = targetAccountId;
+        this.timestamp = timestamp;
+        this.money = money;
+    }
+
+    public ActivityId getId() {
+        return id;
+    }
+
+    public Account.AccountId getOwnerAccountId() {
+        return ownerAccountId;
+    }
+
+    public Account.AccountId getSourceAccountId() {
+        return sourceAccountId;
+    }
+
+    public Account.AccountId getTargetAccountId() {
+        return targetAccountId;
+    }
+
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
+
+    public Money getMoney() {
+        return money;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Activity activity = (Activity) o;
+        return Objects.equals(id, activity.id) && Objects.equals(ownerAccountId, activity.ownerAccountId) && Objects.equals(sourceAccountId, activity.sourceAccountId) && Objects.equals(targetAccountId, activity.targetAccountId) && Objects.equals(timestamp, activity.timestamp) && Objects.equals(money, activity.money);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, ownerAccountId, sourceAccountId, targetAccountId, timestamp, money);
+    }
+
+    @Override
+    public String toString() {
+        return "Activity{" +
+                "id=" + id +
+                ", ownerAccountId=" + ownerAccountId +
+                ", sourceAccountId=" + sourceAccountId +
+                ", targetAccountId=" + targetAccountId +
+                ", timestamp=" + timestamp +
+                ", money=" + money +
+                '}';
+    }
+
 	public Activity(
-			@NonNull Account.AccountId ownerAccountId,
-			@NonNull Account.AccountId sourceAccountId,
-			@NonNull Account.AccountId targetAccountId,
-			@NonNull LocalDateTime timestamp,
-			@NonNull Money money) {
+			Account.AccountId ownerAccountId,
+			Account.AccountId sourceAccountId,
+			Account.AccountId targetAccountId,
+			LocalDateTime timestamp,
+			Money money) {
 		this.id = null;
-		this.ownerAccountId = ownerAccountId;
-		this.sourceAccountId = sourceAccountId;
-		this.targetAccountId = targetAccountId;
-		this.timestamp = timestamp;
-		this.money = money;
+		this.ownerAccountId = Objects.requireNonNull(ownerAccountId);
+		this.sourceAccountId = Objects.requireNonNull(sourceAccountId);
+		this.targetAccountId = Objects.requireNonNull(targetAccountId);
+		this.timestamp = Objects.requireNonNull(timestamp);
+		this.money = Objects.requireNonNull(money);
 	}
 
-	@Value
 	public static class ActivityId {
 		private final Long value;
+
+        public ActivityId(Long value) {
+            this.value = value;
+        }
+
+        public Long getValue() {
+            return value;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            ActivityId that = (ActivityId) o;
+            return Objects.equals(value, that.value);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(value);
+        }
+
+        @Override
+        public String toString() {
+            return "ActivityId(value=" + value + ")";
+        }
 	}
 
 }

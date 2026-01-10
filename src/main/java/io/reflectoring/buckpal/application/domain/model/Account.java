@@ -2,11 +2,7 @@ package io.reflectoring.buckpal.application.domain.model;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
-
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Value;
+import java.util.Objects;
 
 /**
  * An account that holds a certain amount of money. An {@link Account} object only
@@ -14,7 +10,6 @@ import lombok.Value;
  * the sum of a baseline balance that was valid before the first activity in the
  * window and the sum of the activity values.
  */
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Account {
 
 	/**
@@ -26,12 +21,26 @@ public class Account {
 	 * The baseline balance of the account. This was the balance of the account before the first
 	 * activity in the activityWindow.
 	 */
-	@Getter private final Money baselineBalance;
+	private final Money baselineBalance;
 
 	/**
 	 * The window of latest activities on this account.
 	 */
-	@Getter private final ActivityWindow activityWindow;
+	private final ActivityWindow activityWindow;
+
+    private Account(AccountId id, Money baselineBalance, ActivityWindow activityWindow) {
+        this.id = id;
+        this.baselineBalance = baselineBalance;
+        this.activityWindow = activityWindow;
+    }
+
+    public Money getBaselineBalance() {
+        return baselineBalance;
+    }
+
+    public ActivityWindow getActivityWindow() {
+        return activityWindow;
+    }
 
 	/**
 	 * Creates an {@link Account} entity without an ID. Use to create a new entity that is not yet
@@ -110,9 +119,34 @@ public class Account {
 		return true;
 	}
 
-	@Value
 	public static class AccountId {
-		private Long value;
+		private final Long value;
+
+        public AccountId(Long value) {
+            this.value = value;
+        }
+
+        public Long getValue() {
+            return value;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            AccountId accountId = (AccountId) o;
+            return Objects.equals(value, accountId.value);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(value);
+        }
+
+        @Override
+        public String toString() {
+            return "AccountId(value=" + value + ")";
+        }
 	}
 
 }

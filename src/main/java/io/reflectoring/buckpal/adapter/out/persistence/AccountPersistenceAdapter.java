@@ -6,13 +6,11 @@ import io.reflectoring.buckpal.application.domain.model.Activity;
 import io.reflectoring.buckpal.application.port.out.LoadAccountPort;
 import io.reflectoring.buckpal.application.port.out.UpdateAccountStatePort;
 import io.reflectoring.buckpal.common.PersistenceAdapter;
-import lombok.RequiredArgsConstructor;
 
 import jakarta.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@RequiredArgsConstructor
 @PersistenceAdapter
 class AccountPersistenceAdapter implements
 		LoadAccountPort,
@@ -21,6 +19,12 @@ class AccountPersistenceAdapter implements
 	private final SpringDataAccountRepository accountRepository;
 	private final ActivityRepository activityRepository;
 	private final AccountMapper accountMapper;
+
+	public AccountPersistenceAdapter(SpringDataAccountRepository accountRepository, ActivityRepository activityRepository, AccountMapper accountMapper) {
+		this.accountRepository = accountRepository;
+		this.activityRepository = activityRepository;
+		this.accountMapper = accountMapper;
+	}
 
 	@Override
 	public Account loadAccount(

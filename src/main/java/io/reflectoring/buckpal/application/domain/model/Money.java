@@ -1,17 +1,39 @@
 package io.reflectoring.buckpal.application.domain.model;
 
 import java.math.BigInteger;
+import java.util.Objects;
 
-import lombok.NonNull;
-import lombok.Value;
-
-@Value
-public class Money {
+public final class Money {
 
 	public static Money ZERO = Money.of(0L);
 
-	@NonNull
 	private final BigInteger amount;
+
+    public Money(BigInteger amount) {
+        this.amount = Objects.requireNonNull(amount);
+    }
+
+    public BigInteger getAmount() {
+        return amount;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Money money = (Money) o;
+        return Objects.equals(amount, money.amount);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(amount);
+    }
+
+    @Override
+    public String toString() {
+        return "Money(amount=" + amount + ")";
+    }
 
 	public boolean isPositiveOrZero(){
 		return this.amount.compareTo(BigInteger.ZERO) >= 0;

@@ -6,8 +6,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
-import lombok.NonNull;
+import java.util.Objects;
 
 /**
  * A window of account activities.
@@ -57,12 +56,12 @@ public class ActivityWindow {
 		return Money.add(depositBalance, withdrawalBalance.negate());
 	}
 
-	public ActivityWindow(@NonNull List<Activity> activities) {
-		this.activities = activities;
+	public ActivityWindow(List<Activity> activities) {
+		this.activities = Objects.requireNonNull(activities);
 	}
 
-	public ActivityWindow(@NonNull Activity... activities) {
-		this.activities = new ArrayList<>(Arrays.asList(activities));
+	public ActivityWindow(Activity... activities) {
+		this.activities = new ArrayList<>(Arrays.asList(Objects.requireNonNull(activities)));
 	}
 
 	public List<Activity> getActivities() {
