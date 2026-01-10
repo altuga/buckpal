@@ -31,10 +31,12 @@ public class SendMoneyService implements SendMoneyUseCase {
 	@Override
 	public boolean sendMoney(SendMoneyCommand command) {
 
+		// validate business rules 
 		checkThreshold(command);
 
 		LocalDateTime baselineDate = LocalDateTime.now().minusDays(10);
 
+		// manipulate model state 
 		Account sourceAccount = loadAccountPort.loadAccount(
 				command.sourceAccountId(),
 				baselineDate);
@@ -61,9 +63,11 @@ public class SendMoneyService implements SendMoneyUseCase {
 			throw new RuntimeException("Deposit failed: could not deposit funds to account " + targetAccountId);
 		}
 
+		 
 		updateAccountStatePort.updateActivities(sourceAccount);
 		updateAccountStatePort.updateActivities(targetAccount);
 
+		// return output
 		accountLock.releaseAccount(sourceAccountId);
 		accountLock.releaseAccount(targetAccountId);
 		return true;
