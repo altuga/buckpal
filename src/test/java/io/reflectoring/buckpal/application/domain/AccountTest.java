@@ -5,6 +5,7 @@ import io.reflectoring.buckpal.application.domain.model.Account.AccountId;
 import io.reflectoring.buckpal.application.domain.model.ActivityWindow;
 import io.reflectoring.buckpal.application.domain.model.Money;
 import org.junit.jupiter.api.Test;
+
 import static io.reflectoring.buckpal.common.AccountTestData.*;
 import static io.reflectoring.buckpal.common.ActivityTestData.*;
 import static org.assertj.core.api.Assertions.*;

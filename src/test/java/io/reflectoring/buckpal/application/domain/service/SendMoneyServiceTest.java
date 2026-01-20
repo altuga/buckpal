@@ -60,6 +60,7 @@ class SendMoneyServiceTest {
 	@Test
 	void transactionSucceeds() {
 
+		// given
 		Account sourceAccount = givenSourceAccount();
 		Account targetAccount = givenTargetAccount();
 
@@ -73,8 +74,10 @@ class SendMoneyServiceTest {
 				targetAccount.getId().get(),
 				money);
 
+		//when
 		boolean success = sendMoneyService.sendMoney(command);
 
+		//then
 		assertThat(success).isTrue();
 
 		AccountId sourceAccountId = sourceAccount.getId().get();

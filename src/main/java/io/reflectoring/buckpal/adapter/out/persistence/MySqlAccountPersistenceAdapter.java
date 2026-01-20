@@ -4,10 +4,10 @@ import io.reflectoring.buckpal.common.PersistenceAdapter;
 import org.springframework.context.annotation.Profile;
 
 @PersistenceAdapter
-@Profile("!mysql")
-class AccountPersistenceAdapter extends AbstractAccountPersistenceAdapter {
+@Profile("mysql")
+class MySqlAccountPersistenceAdapter extends AbstractAccountPersistenceAdapter {
 
-	AccountPersistenceAdapter(
+	MySqlAccountPersistenceAdapter(
 				SpringDataAccountRepository accountRepository,
 				ActivityRepository activityRepository,
 				AccountMapper accountMapper) {

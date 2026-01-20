@@ -1,0 +1,17 @@
+# MySQL profile configuration.
+# Activate with: --spring.profiles.active=mysql
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/buckpal?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: buckpal
+    password: buckpal
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        jdbc:
+          time_zone: UTC
+
