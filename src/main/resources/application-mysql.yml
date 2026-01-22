@@ -14,4 +14,8 @@ spring:
         dialect: org.hibernate.dialect.MySQLDialect
         jdbc:
           time_zone: UTC
+  sql:
+    init:
+      mode: always
+      data-locations: classpath:data.sql
 
