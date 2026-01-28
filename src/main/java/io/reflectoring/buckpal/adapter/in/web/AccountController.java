@@ -1,6 +1,5 @@
 package io.reflectoring.buckpal.adapter.in.web;
 
-import io.reflectoring.buckpal.application.domain.model.Money;
 import io.reflectoring.buckpal.application.domain.model.Account.AccountId;
 import io.reflectoring.buckpal.application.port.in.GetAccountBalanceUseCase;
 import io.reflectoring.buckpal.application.port.in.GetAccountBalanceUseCase.GetAccountBalanceQuery;
@@ -20,9 +19,12 @@ public class AccountController {
 	}
 
     @GetMapping(path = "/accounts/{id}/balance")
-    public Money getAccountBalance(@PathVariable("id") Long accountId ) {
-		return getAccountBalanceUseCase.getAccountBalance(
-				new GetAccountBalanceQuery(new AccountId(accountId)));
+    public AccountBalanceResponse getAccountBalance(@PathVariable("id") Long accountId) {
+		return new AccountBalanceResponse(
+				getAccountBalanceUseCase.getAccountBalance(
+						new GetAccountBalanceQuery(new AccountId(accountId)))
+						.getAmount()
+						.toString());
     }
 
 
